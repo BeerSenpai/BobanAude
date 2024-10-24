@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/Flask/Bobana/app/static/style.css">
+    <title>Shop</title>
+</head>
+<body>
+    <h1>Available Products</h1>
+    
+    <div class="products">
+        {% for product in products %}
+        <div class="product">
+            <h2>{{ product.name }} - {{ product.price }} €</h2>
+            <p>{{ product.description }}</p>
+            <p><strong>In Stock:</strong> {{ product.stock }}</p>
+            
+            <!-- Image principale du produit -->
+            <img src="{{ url_for('static', filename='uploads/' ~ product.image_file) }}" alt="{{ product.name }}">
+            
+            <!-- Affichage des couleurs disponibles avec leurs images -->
+            <div class="colors">
+                <h3>Available Colors:</h3>
+                {% for color in product.colors %}
+                <div class="color-img">
+                    <p>{{ color.name }}</p>
+                    <img src="{{ url_for('static', filename='uploads/' ~ color.image_file) }}" alt="{{ color.name }}">
+                </div>
+                {% endfor %}
+                
+                <!-- Formulaire pour ajouter le produit au panier avec choix de la couleur -->
+                <form action="{{ url_for('main.add_to_cart', product_id=product.id) }}" method="POST">
+                    <label for="color">Choose a color:</label>
+                    <select name="color" required>
+                        <option value="" disabled selected>Select color</option>
+                        <!-- Boucle sur les couleurs associées au produit -->
+                        {% for color in product.colors %}
+                            <option value="{{ color.name }}">{{ color.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <br>
+                    <button type="submit">Add to Cart</button>
+                </form>
+                
+            </div>
+        </div>
+        {% else %}
+        <p>No products available.</p>
+        {% endfor %}
+    </div>
+</body>
+</html>

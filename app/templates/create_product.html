@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Product</title>
+</head>
+<body>
+    <h2>Create a New Product</h2>
+   <!-- Formulaire de création de produit -->
+   <form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+
+    <p>{{ form.name.label }}<br> {{ form.name() }}</p>
+    <p>{{ form.price.label }}<br> {{ form.price() }}</p>
+    <p>{{ form.description.label }}<br> {{ form.description() }}</p>
+    <p>{{ form.stock.label }}<br> {{ form.stock() }}</p>
+    
+    <!-- Champ pour l'image principale -->
+    <p>{{ form.image.label }}<br> {{ form.image() }}</p>
+    
+    <!-- Champs pour les couleurs et leurs images -->
+    <p>{{ form.color1_name.label }}<br> {{ form.color1_name() }}<br>{{ form.image_color1.label }}<br> {{ form.image_color1() }}</p>
+    <p>{{ form.color2_name.label }}<br> {{ form.color2_name() }}<br>{{ form.image_color2.label }}<br> {{ form.image_color2() }}</p>
+    <p>{{ form.color3_name.label }}<br> {{ form.color3_name() }}<br>{{ form.image_color3.label }}<br> {{ form.image_color3() }}</p>
+
+    <p><button type="submit">Save Product</button></p>
+</form>
+    
+    {% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul>
+    {% for category, message in messages %}
+      <li class="{{ category }}">{{ message }}</li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}

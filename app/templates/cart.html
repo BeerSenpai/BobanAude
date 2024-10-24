@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panier</title>
+</head>
+<body>
+    <h1>Your Cart</h1>
+    <ul>
+        {% for item in cart %}
+        <li>
+            <strong>{{ item['product_name'] }} - {{ item['price'] }} €</strong><br>
+
+            <!-- Afficher l'image principale du produit -->
+            <img src="{{ url_for('static', filename='uploads/' + item['image_file'].replace('.jpg', '.webp').replace('.png', '.webp')) }}" alt="{{ item['product_name'] }}" style="max-width: 100px;">
+            
+            <p>Color: {{ item['color'] }}</p>
+
+            <!-- Afficher l'image de la couleur sélectionnée -->
+            {% if item['color_image'] %}
+                <img src="{{ url_for('static', filename='uploads/' + item['color_image'].replace('.jpg', '.webp').replace('.png', '.webp')) }}" alt="{{ item['color'] }}" style="max-width: 100px;">
+            {% else %}
+                <p>No image available for this color.</p>
+            {% endif %}
+
+            <p>Quantity: {{ item['quantity'] }}</p>
+            <form action="{{ url_for('main.remove_from_cart', product_id=item['product_id']) }}" method="POST">
+                <button type="submit">Remove</button>
+            </form>
+        </li>
+        {% endfor %}
+    </ul>
+    <p>Total: {{ total }} €</p>
+    
+    {% if cart|length == 0 %}
+    <p>Your cart is empty.</p>
+    {% endif %}
+</body>
+</html>
